@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AIESCUDO v9.5 a - Escudo Anti-Fraude Contextual</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script crossorigin="anonymous" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgZtMcaFjtfIhNurlzjugphRknXlcSOvRSDeljBPMbLLETJSRvAflXnonhHIGHLTKQA==" referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+        /* --- ESTILOS COMPLETO DE LA V8.9 (DISEÑO APROBADO) --- */
+        :root {
+            --color-bg-dark: #1e1e2f;
+            --color-bg-card: #2f2f45;
+            --color-primary-blue: #007bff;
+            --color-primary-accent: #00c0ff;
+            --color-text-light: #ffffff;
+            --color-text-secondary: #aaaaaa;
+            --color-tag-popular: #ffc107;
+            --color-border: #444466;
+            --color-safe: #28a745;
+            --color-warning: #ffc107;
+            --color-danger: #dc3545;
+            --font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--color-bg-dark); 
+            color: var(--color-text-light);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            padding: 20px 0;
+        }
+
+        .header {
+            background-color: var(--color-bg-dark);
+            text-align: center;
+            padding: 40px 0 20px 0;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .logo-img {
+            width: 70px;
+            height: 70px; 
+            margin-right: 15px;
+            filter: drop-shadow(0 0 8px rgba(0, 192, 255, 0.7));
+        }
+        
+        .logo h1 {
+            font-size: 45px; 
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+        
+        /* Ajuste para el marcador de versión */
+        .logo-version {
+            font-size: 16px; 
+            color: var(--color-primary-accent); 
+            margin-left: 15px; 
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        .header > h1 {
+            font-size: 32px; 
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .header h1 span.accent {
+            color: var(--color-primary-accent);
+            text-shadow: 0 0 10px rgba(0, 192, 255, 0.5);
+        }
+
+        .header h2 {
+            font-size: 20px;
+            font-weight: 300;
+            color: var(--color-text-secondary);
+            margin-top: 5px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .analysis-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .search-bar {
+            display: flex;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px auto; 
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--color-border);
+            max-width: 600px;
+        }
+
+        .search-bar input {
+            flex-grow: 1;
+            padding: 18px 25px;
+            border: none;
+            font-size: 16px;
+            background-color: var(--color-bg-card);
+            color: var(--color-text-light);
+            outline: none;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-bar input:focus {
+            border: 1px solid var(--color-primary-accent);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), 0 0 5px rgba(0, 192, 255, 0.6);
+        }
+
+        .search-bar input::placeholder {
+            color: var(--color-text-secondary);
+        }
+
+        .analyze-btn {
+            background: linear-gradient(135deg, var(--color-primary-accent) 0%, #0099cc 100%);
+            color: var(--color-bg-dark);
+            border: none;
+            padding: 18px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .analyze-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #0099cc 0%, #0077aa 100%);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .analyze-btn:disabled {
+            background: linear-gradient(135deg, #0099cc77 0%, #0077aa77 100%);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .analysis-section p {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+
+        .results-container {
+            background-color: var(--color-bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            margin-bottom: 40px;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            animation: fadeIn 0.5s ease-out;
+            position: relative; 
+        }
+        
+        .pdf-download-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--color-danger);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .pdf-download-btn:hover {
+            background-color: #b02a37;
+        }
+        
+        @media print {
+            .pdf-download-btn {
+                display: none;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            padding-right: 150px; 
+        }
+
+        .result-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--color-text-light);
+        }
+
+        .status-badge {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+            position: absolute;
+            top: 20px;
+            right: 110px; 
+        }
+        
+        .result-header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+
+        .status-safe { background-color: var(--color-safe); }
+        .status-warning { background-color: var(--color-warning); color: #000; }
+        .status-danger { background-color: var(--color-danger); }
+
+        .result-text {
+            color: var(--color-text-light);
+            margin-bottom: 15px;
+            white-space: pre-wrap;
+        }
+
+        .result-text strong {
+            color: var(--color-primary-accent);
+        }
+
+        .sources-list {
+            margin-top: 20px;
+            border-top: 1px dashed var(--color-border);
+            padding-top: 15px;
+        }
+
+        .sources-list h4 {
+            font-size: 16px;
+            color: var(--color-text-secondary);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        
+        .sources-list h4 strong {
+            color: var(--color-tag-popular);
+            word-break: break-all;
+        }
+
+        .sources-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sources-list li {
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .sources-list a {
+            color: var(--color-primary-blue);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .sources-list a:hover {
+            color: var(--color-primary-accent);
+            text-decoration: underline;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: var(--color-text-secondary);
+            font-size: 18px;
+        }
+
+        .loading i {
+            font-size: 40px;
+            color: var(--color-primary-accent);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .services-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .services-section p {
+            color: var(--color-text-secondary);
+            font-size: 15px;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .service-card {
+            background-color: var(--color-bg-card);
+            border-radius: 8px;
+            padding: 20px 10px;
+            border: 1px solid var(--color-border);
+            transition: transform 0.2s, box-shadow 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-3px); 
+            box-shadow: 0 0 15px rgba(0, 192, 255, 0.6), 0 0 25px rgba(0, 192, 255, 0.4);
+            border-color: var(--color-primary-accent); 
+        }
+
+        .service-card.active {
+            box-shadow: 0 0 0 2px var(--color-primary-accent);
+        }
+
+        .service-icon {
+            font-size: 28px;
+            color: var(--color-primary-accent);
+            margin-bottom: 10px;
+        }
+
+        .service-card p {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text-light);
+        }
+
+        .gamer-container { 
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+            margin-bottom: 50px;
+            background-color: #383850; 
+            border: 2px solid var(--color-primary-accent); 
+            box-shadow: 0 0 15px rgba(0, 192, 255, 0.3);
+        }
+
+        .gamer-search-bar {
+            display: flex;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px auto 0; 
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--color-primary-accent); 
+            max-width: 600px;
+        }
+
+        .gamer-search-bar input {
+            flex-grow: 1;
+            padding: 18px 25px;
+            border: none;
+            font-size: 16px;
+            background-color: var(--color-bg-dark); 
+            color: var(--color-text-light);
+            outline: none;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .gamer-analyze-btn {
+            background: linear-gradient(135deg, var(--color-primary-accent) 0%, #0099cc 100%);
+            color: var(--color-bg-dark);
+            border: none;
+            padding: 18px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .gamer-analyze-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #0099cc 0%, #0077aa 100%);
+            transform: translateY(-2px);
+        }
+        
+        .gamer-analyze-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+
+        .gamer-info-box {
+            text-align: left;
+            margin-top: 15px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            background-color: rgba(0, 192, 255, 0.1); 
+            border-left: 5px solid var(--color-primary-accent);
+            color: var(--color-text-light);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .gamer-info-box i {
+            color: var(--color-tag-popular); 
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        .promise-grid {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 30px;
+        }
+
+        .promise-grid h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--color-text-light);
+        }
+
+        .promise-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .promise-card {
+            background-color: var(--color-bg-card);
+            border-radius: 10px;
+            padding: 25px;
+            border: 1px solid var(--color-border);
+            transition: box-shadow 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .promise-card:hover {
+            box-shadow: 0 0 20px rgba(0, 192, 255, 0.2);
+        }
+
+        .promise-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .promise-card h3 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--color-primary-accent);
+        }
+
+        .promise-card p {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            flex-grow: 1;
+        }
+
+        .promise-card .verdict {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: bold;
+            border: 1px solid;
+        }
+
+        .verdict.generic {
+            border-color: var(--color-warning);
+            color: var(--color-warning);
+        }
+        
+        .verdict.specialized {
+            border-color: var(--color-danger);
+            color: var(--color-danger);
+        }
+        
+        .verdict.intuitive {
+            border-color: var(--color-safe);
+            color: var(--color-safe);
+        }
+
+        .pricing-table {
+            display: flex;
+            gap: 20px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            padding-top: 20px;
+            justify-content: center;
+        }
+        
+        .plan {
+            width: 100%;
+            max-width: 350px;
+            background-color: var(--color-bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--color-border);
+        }
+
+        .plan h3 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+        
+        .premium {
+            border: 2px solid var(--color-primary-accent);
+            transform: scale(1.05); 
+            box-shadow: 0 0 15px rgba(0, 192, 255, 0.6), 0 0 25px rgba(0, 192, 255, 0.4); 
+            z-index: 10;
+        }
+        
+        .plan.family-pack {
+             border-color: #ff5722;
+        }
+        
+        .plan.family-pack:hover {
+            box-shadow: 0 0 15px rgba(255, 87, 34, 0.6), 0 0 25px rgba(255, 87, 34, 0.4);
+        }
+
+
+        .tag {
+            display: inline-block;
+            background-color: #555;
+            color: var(--color-text-light);
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .tag.popular {
+            background-color: var(--color-primary-accent);
+            color: var(--color-bg-dark);
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .price {
+            font-size: 30px;
+            font-weight: bold;
+            color: var(--color-tag-popular);
+            margin: 5px 0 10px 0;
+        }
+
+        .price span {
+            font-size: 18px;
+            font-weight: normal;
+            color: var(--color-text-secondary);
+        }
+
+        .plan .description {
+            color: var(--color-text-secondary);
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .plan ul {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            font-size: 14px;
+            display: inline-block;
+            min-width: 80%;
+        }
+
+        .plan ul li {
+            margin-bottom: 8px;
+            color: var(--color-text-light);
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .plan ul li::before {
+            content: "\f00c";
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--color-primary-accent);
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-box {
+            background-color: var(--color-bg-card);
+            border-radius: 12px;
+            padding: 20px 22px;
+            width: 100%;
+            max-width: 430px;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 14px 35px rgba(0,0,0,0.6);
+            position: relative;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .modal-desc {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+            background-color: var(--color-bg-dark);
+            color: var(--color-text-light);
+            font-size: 14px;
+            margin-bottom: 14px;
+            outline: none;
+        }
+
+        .modal-input::placeholder {
+            color: var(--color-text-secondary);
+        }
+
+        .modal-primary-btn {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            background-color: var(--color-primary-accent);
+            color: var(--color-bg-dark);
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        .modal-primary-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            border: none;
+            background: transparent;
+            color: var(--color-text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 850px) {
+            .promise-cards {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .pricing-table {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .plan {
+                width: 90%;
+            }
+
+            .plan.premium {
+                transform: scale(1.0); 
+                box-shadow: 0 0 10px rgba(0, 192, 255, 0.4);
+            }
+
+            .search-bar {
+                flex-direction: column;
+                border-radius: 10px;
+            }
+
+            .search-bar input, .analyze-btn {
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .analyze-btn {
+                border-radius: 0 0 10px 10px;
+            }
+            
+            .search-bar input {
+                border-radius: 10px 10px 0 0;
+            }
+
+            .gamer-search-bar {
+                flex-direction: column;
+            }
+            .gamer-search-bar input {
+                border-radius: 10px 10px 0 0;
+            }
+            .gamer-analyze-btn {
+                border-radius: 0 0 10px 10px;
+            }
+
+            .logo h1 {
+                font-size: 38px;
+            }
+            .header > h1 {
+                font-size: 28px;
+            }
+            .header h2 {
+                font-size: 18px;
+            }
+            
+            .result-header-right {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-end;
+            }
+            .status-badge {
+                position: static; 
+            }
+            .pdf-download-btn {
+                position: static;
+            }
+            .result-header {
+                padding-right: 20px;
+            }
+        }
+    </style>
+<!-- ADDED: Gamer button violet styles -->
+<style id="aiescudo-gamer-style">
+/* === Estilos para modo GAMER: violeta / morado === */
+.gamer-container {
+    padding: 30px;
+    border-radius: 12px;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    background-color: #2f2e41;
+    border: 2px solid #8a4bff;
+    box-shadow: 0 0 20px rgba(138,75,255,0.22), 0 0 40px rgba(74,0,224,0.08);
+}
+
+.gamer-analyze-btn {
+    background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+    color: #ffffff;
+    border: none;
+    padding: 18px 30px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 6px 18px rgba(74,0,224,0.28), 0 2px 6px rgba(0,0,0,0.45);
+    border-left: 1px solid rgba(255,255,255,0.03);
+    border-radius: 8px;
+}
+
+.gamer-analyze-btn:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(138,75,255,0.30), 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.gamer-analyze-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.gamer-search-bar {
+    display: flex;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px auto 0;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(138,75,255,0.18);
+    max-width: 600px;
+}
+
+.gamer-info-box {
+    text-align: left;
+    margin-top: 15px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    background-color: rgba(138,75,255,0.06);
+    border-left: 5px solid #8a4bff;
+    color: #cfd8e3;
+    font-size: 14px;
+    font-weight: 500;
+}
+.gamer-info-box i {
+    color: #ffd86b;
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+/* make sure any icon inside gamer button is white for contrast */
+.gamer-analyze-btn .fas, .gamer-analyze-btn .far, .gamer-analyze-btn svg { color: #ffffff; }
+</style>
+</head>
+<body>
+<header class="header">
+<div class="logo">
+<img alt="AIESCUDO Logo" class="logo-img" src="assets/logo-casco.png"/>
+<h1>AIESCUDO</h1>
+<span class="logo-version">v9.5 a</span>
+</div>
+<h1>Tu <span class="accent">Escudo Anti-Fraude</span> para Familia.</h1>
+<h2>Comprobación sencilla, pensada para personas inexpertas.</h2>
+</header>
+<main class="container">
+<section class="analysis-section">
+<div class="search-bar">
+<input id="analysisInput" placeholder="Pega aquí lo que quieras    " type="text"/>
+<button class="analyze-btn" id="analyzeBtn">
+                    ANALIZAR CON AIESCUDO <i class="fas fa-heartbeat"></i>
+</button>
+</div>
+<p>Revisa enlaces, correos, números de teléfono,perfiles falsos, billetera cripto y QR.</p>
+</section>
+<div id="resultsDisplay"></div>
+<section class="services-section">
+<div class="services-grid">
+<div class="service-card active" data-service="analyze-link">
+<i class="fas fa-link service-icon"></i>
+<p>Analizar enlace</p>
+</div>
+<div class="service-card" data-service="verify-email">
+<i class="fas fa-envelope service-icon"></i>
+<p>Verificar e-mail</p>
+</div>
+<div class="service-card" data-service="check-number">
+<i class="fas fa-mobile-alt service-icon"></i>
+<p>Comprobar número</p>
+</div>
+<div class="service-card" data-service="check-wallet">
+<i class="fas fa-wallet service-icon"></i>
+<p>Explorar wallet</p>
+</div>
+<div class="service-card" data-service="investigate-profile">
+<i class="fas fa-user-tie service-icon"></i>
+<p>Investigar perfil falso</p>
+</div>
+<div class="service-card" data-service="detect-scam">
+<i class="fas fa-qrcode service-icon"></i>
+<p>Escanear QR</p>
+</div>
+</div>
+<section class="services-section" id="gamers-section">
+<div class="gamer-container">
+<h2 style="font-size: 26px; font-weight: 700; margin-bottom: 10px; color: var(--color-primary-accent);">
+                    🎮 PROTECCION PARA JUGADORES
+                </h2>
+<p style="color: var(--color-text-secondary); font-size: 15px; margin-bottom: 20px;">
+                    Protege tus cuentas Roblox, Epic/Fornite, Nintendo, Minecraft,Pokemon GO, Steam Activision,  PlayStation/Sony, Xbox, EA-Sports, Valorant.¡Manténlas seguras! .
+                </p>
+<div class="analysis-section" style="margin-bottom: 15px;">
+<div class="gamer-search-bar">
+<input id="gamerInput" placeholder="Pega aquí lo que quieras " type="text"/>
+<button class="gamer-analyze-btn" id="gamerAnalyzeBtn">
+                            ANALIZAR PARA GAMERS <i class="fas fa-gamepad"></i>
+</button>
+</div>
+<div class="gamer-info-box">
+<i class="fas fa-lightbulb"></i> 
+                Te avisamos sobre posibles timos: cuentas premium falsas, bots que engañan, enlaces sospechosos, tiendas fake, skins falsas, cuentas robadas, sorteos falsos y mensajes que intentan sacarte información.
+                    </div>
+</div>
+<div id="gamerResultsDisplay"></div>
+</div>
+</section>
+</section>
+<section class="promise-grid">
+<h2>Nuestra Promesa: Seguro y Facil.</h2>
+<div class="promise-cards">
+<div class="promise-card">
+<i class="fas fa-robot promise-icon" style="color:#d1d1d1;"></i>
+<h3>Verificación Basica</h3>
+<p>La web está existe, eso no te protege de una estafa</p>
+<div class="verdict generic">ADVERTENCIA": La web existe, pero no sabemos si es segura."</div>
+<p style="margin-top: 5px;">Este tipo de verificación no detecta estafas.</p>
+</div>
+<div class="promise-card">
+<i class="fas fa-brain promise-icon" style="color:var(--color-primary-accent);"></i>
+<h3>Análisis inteligente</h3>
+<p>AIESCUDO Revisamos si la web ha sido reportada como estafa.</p>
+<div class="verdict specialized">PELIGRO": Este enlace fue reportado como estafa"</div>
+<p style="margin-top: 5px;">Busca riesgo real, no solo si la web existe.</p>
+</div>
+<div class="promise-card">
+<i class="fas fa-heart promise-icon" style="color:var(--color-safe);"></i>
+<h3>Uso simple y claro</h3>
+<p>Una sola caja revisa todo: enlaces, mensajes, perfiles y números. Resultados faciles de entender.</p>
+<div class="verdict intuitive">"SEGURO": Seguridad clara y simple.</div>
+<p style="margin-top: 5px;">Tu primer escudo contra estafas digitales</p>
+</div>
+</div>
+</section>
+<h2 style="text-align: center; font-size: 28px; font-weight: 700; margin-bottom: 30px;">Planes de Protección</h2>
+<section class="pricing-table">
+<div class="plan">
+<div class="tag">Gratuito</div>
+<h3>Plan Free</h3>
+<div class="price">0€ <span>/ mes</span></div>
+<p class="description">Prueba AIESCUDO sin compromiso.</p>
+<ul><li>Sin registro:</li><li>• 1 análisis AIESCUDO</li><li>Con registro (Free):</li><li>• 3 análisis al mes (a libre elección)</li><li>• Informe</li></ul>
+<button class="modal-primary-btn" style="background-color: #555;">Registrarse Gratis</button>
+</div>
+<div class="plan premium">
+<div class="tag popular">MÁS POPULAR</div>
+<h3>Plan Premium</h3>
+<div class="price">1,99€ <span>/ mes</span></div>
+<p class="description">Protección completa e ilimitada para ti y tu familia.</p>
+<ul><li>✔ Análisis ilimitados</li><li>✔ Historial completo</li><li>✔ IA avanzada AIESCUDO</li><li>✔ Soporte preferente por Telegram</li><li>✔ Prueba Premium — 7 días FAMILIAR</li></ul>
+<button class="modal-primary-btn">Comenzar AHORA</button>
+</div>
+<div class="plan family-pack">
+<div class="tag" style="background-color: #ff5722;">PACK FAMILIAR</div>
+<h3>Plan Ilimitado (5 Usuarios)</h3>
+<div class="price">4,99€ <span>/ mes</span></div>
+
+<ul><li>Protección para toda la unidad familiar en un solo plan.</li><li>2 Dispositivos</li><li>2,99€ / mes</li><li>3 Dispositivos</li><li>4,99€ / mes</li><li>✔ Todas las funciones del Plan Premium.</li></ul>
+<button class="modal-primary-btn" style="background-color: #ff5522;">Contratar Plan</button>
+</div>
+</section>
+</main>
+<div class="modal-overlay" id="serviceModal">
+<div class="modal-box">
+<button class="modal-close" id="modalCloseBtn">×</button>
+<h3 class="modal-title" id="modalTitle"></h3>
+<p class="modal-desc" id="modalDesc"></p>
+<input class="modal-input" id="modalInput" placeholder="Introduce el contenido aquí..." type="text"/>
+<button class="modal-primary-btn" id="modalAnalyzeBtn">Analizar</button>
+</div>
+</div>
+<script>
+        const analysisInput = document.getElementById('analysisInput');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const resultsDisplay = document.getElementById('resultsDisplay');
+        const gamerInput = document.getElementById('gamerInput');
+        const gamerResultsDisplay = document.getElementById('gamerResultsDisplay');
+        const gamerAnalyzeBtn = document.getElementById('gamerAnalyzeBtn');
+
+        let currentService = "analyze-link"; // Servicio por defecto al iniciar
+
+        // Modal
+        const serviceModal = document.getElementById("serviceModal");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalDesc = document.getElementById("modalDesc");
+        const modalInput = document.getElementById("modalInput");
+        const modalAnalyzeBtn = document.getElementById("modalAnalyzeBtn");
+        const closeModalBtn = document.getElementById("modalCloseBtn"); 
+
+        const serviceCopy = {
+            'analyze-link': {
+                title: "Analizar enlace",
+                desc: "Pega el enlace sospechoso que quieras analizar con AIESCUDO.",
+                placeholder: "https://ejemplo-sospechoso.com"
+            },
+            'verify-email': {
+                title: "Verificar e-mail",
+                desc: "Introduce el correo o remitente que quieres comprobar.",
+                placeholder: "soporte-banco@ejemplo.com"
+            },
+            'check-number': {
+                title: "Comprobar número",
+                desc: "Introduce el número de teléfono que quieres evaluar.",
+                placeholder: "+34 600 000 000"
+            },
+            'check-wallet': { 
+                title: "Explorar wallet", 
+                desc: "Introduce la dirección de wallet que quieres revisar.", 
+                placeholder: "0x1234..." 
+            },
+            'investigate-profile': { 
+                title: "Investigar perfil falso", 
+                desc: "Pega el enlace o ID del perfil que te genera sospechas.", 
+                placeholder: "https://instagram.com/usuario-raro" 
+            },
+            'detect-scam': { 
+                title: "Escanear QR/Texto", 
+                desc: "Pega el enlace o texto al que apunta el código QR.", 
+                placeholder: "Contenido o URL del QR" 
+            }
+        };
+
+        // =========================================================
+        // 1. FUNCIONES DE CONEXIÓN Y ESTADO (REFACTORIZADAS)
+        // =========================================================
+        
+        async function connectToRealAPI(query, service, context = 'general') {
+            const endpoint = `/api/${service}`;
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query, service, context }),
+            });
+
+            if (!response.ok) {
+                // Mejor manejo de errores: garantiza que el mensaje de error sea legible
+                const errorData = await response.json().catch(() => ({ error: 'Respuesta no JSON del servidor' }));
+                const errorMessage = errorData.error || response.statusText;
+                throw new Error(`Error ${response.status}: ${errorMessage}`);
+            }
+
+            return response.json();
+        }
+
+        function startAnalysisUI(targetDisplay) {
+            targetDisplay.innerHTML = `
+                <div class="loading">
+                    <i class="fas fa-sync-alt"></i>
+                    <p>Analizando la entrada con Inteligencia de Riesgo Especializada...</p>
+                </div>
+            `;
+            // Deshabilitar todos los botones relevantes
+            modalAnalyzeBtn.disabled = true;
+            analyzeBtn.disabled = true;
+            if (gamerAnalyzeBtn) gamerAnalyzeBtn.disabled = true;
+        }
+
+        function endAnalysisUI(context, error = null) {
+            // Siempre re-habilita los botones
+            modalAnalyzeBtn.disabled = false;
+            analyzeBtn.disabled = false;
+            if (gamerAnalyzeBtn) gamerAnalyzeBtn.disabled = false;
+            
+            closeServiceModal(); // Cierra el modal si estaba abierto
+
+            if (error) {
+                const display = (context === 'gamer') ? gamerResultsDisplay : resultsDisplay;
+                display.innerHTML = `
+                    <div class="results-container">
+                        <div class="result-header">
+                            <div class="result-title">Error de Análisis</div>
+                            <span class="status-badge status-danger">FALLO</span>
+                        </div>
+                        <p style="color:var(--color-danger); font-weight: bold;">No pudimos completar el análisis.</p>
+                        <p style="font-size: 14px; color: var(--color-text-secondary);">Detalle: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        
+// --- Limpia resultados previos sin tocar nada más del index ---
+function clearPreviousResults(context) {
+    try {
+        // eliminar contenedor de informe general si existe
+        const generalReport = document.getElementById('report-to-download-general');
+        if (generalReport && generalReport.parentNode) {
+            generalReport.parentNode.removeChild(generalReport);
+        }
+        // eliminar contenedor de informe gamer si existe
+        const gamerReport = document.getElementById('report-to-download-gamer');
+        if (gamerReport && gamerReport.parentNode) {
+            gamerReport.parentNode.removeChild(gamerReport);
+        }
+
+        // limpieza conservadora: si por alguna razón quedan fragmentos, vaciamos los displays
+        try {
+            if (context === 'gamer') {
+                if (typeof gamerResultsDisplay !== 'undefined' && gamerResultsDisplay) gamerResultsDisplay.innerHTML = '';
+            } else {
+                if (typeof resultsDisplay !== 'undefined' && resultsDisplay) resultsDisplay.innerHTML = '';
+            }
+        } catch (innerErr) {
+            // ignore display clearing errors
+            console.warn('clearPreviousResults - display clear failed:', innerErr);
+        }
+    } catch (err) {
+        // no romper nada; solo log para debug
+        console.warn('clearPreviousResults fallo:', err);
+    }
+}
+
+async function analyzeContent(query, service, context = 'general') {
+            const targetDisplay = (context === 'gamer') ? gamerResultsDisplay : resultsDisplay;
+
+            
+    // BORRAR informe anterior antes de iniciar el nuevo análisis
+    clearPreviousResults(context);
+// Iniciar UI (Loading y deshabilitar botones)
+            startAnalysisUI(targetDisplay);
+
+            try {
+                // ** LLAMADA A LA API REAL **
+                const data = await connectToRealAPI(query, service, context);
+
+                // Renderizar los resultados
+                if (context === 'gamer') {
+                    renderGamerResults(data.title, data.summary, data.sources, data.status, data.query);
+                } else {
+                    renderResults(data.title, data.summary, data.sources, data.status, data.query, context);
+                }
+                
+                // Finalizar UI (Habilitar botones y cerrar modal)
+                endAnalysisUI(context);
+
+            } catch (error) {
+                console.error(error);
+                // Finalizar UI con error (Habilitar botones, cerrar modal y mostrar mensaje de error)
+                endAnalysisUI(context, error); 
+            }
+        }
+
+
+        // =========================================================
+        // 2. LÓGICA DE EVENTOS (Listeners) - REFACTORIZADA
+        // =========================================================
+
+        // Función para detectar el tipo de servicio (para la caja grande)
+        function detectServiceType(query) {
+            // Regex más precisos y claros
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const phoneRegex = /^\+?[\d\s-]{7,25}$/;
+            const urlRegex = /^(http|https):\/\/[^ "]+$/;
+
+            // Prioridad: URL (analyze-link)
+            if (urlRegex.test(query)) {
+                return 'analyze-link';
+            }
+            if (emailRegex.test(query)) {
+                return 'verify-email';
+            }
+            // Limpia el query para la comprobación del teléfono (elimina espacios y guiones)
+            if (phoneRegex.test(query.replace(/\s/g, '').replace(/-/g, ''))) { 
+                return 'check-number';
+            }
+            
+            // Por defecto, asume que es un enlace (el servicio más genérico)
+            return 'analyze-link';
+        }
+
+        // Función auxiliar para actualizar la tarjeta activa visualmente
+        function updateActiveCard(serviceKey) {
+            document.querySelectorAll(".service-card").forEach(c => c.classList.remove("active"));
+            const activeCard = document.querySelector(`.service-card[data-service="${serviceKey}"]`);
+            if (activeCard) {
+                activeCard.classList.add("active");
+            }
+        }
+
+        // Análisis Principal (Detecta el servicio y llama a la API)
+        analyzeBtn.addEventListener("click", () => {
+            const query = analysisInput.value.trim();
+            if (!query) return;
+
+            const detectedService = detectServiceType(query);
+            currentService = detectedService;
+
+            // Lógica visual extraída a una función
+            updateActiveCard(detectedService);
+
+            analyzeContent(query, detectedService, 'general');
+        });
+
+        // Enter en la caja grande
+        analysisInput.addEventListener("keypress", function(e) {
+            if (e.key === 'Enter') {
+                analyzeBtn.click();
+            }
+        });
+
+        // Activar tarjetas de servicio y abrir modal
+        document.querySelectorAll(".service-card").forEach(card => {
+            const svc = card.dataset.service;
+            card.addEventListener("click", () => {
+                // NOTA: Eliminamos la comprobación `if (card.classList.contains('opacity-50')) return;`
+                // porque las clases de opacidad ya fueron eliminadas del HTML.
+                
+                // Lógica visual extraída
+                updateActiveCard(svc);
+                currentService = svc;
+                openServiceModal(svc);
+            });
+        });
+
+        // Botón de analizar dentro del modal
+        modalAnalyzeBtn.addEventListener("click", () => {
+            const q = modalInput.value.trim();
+            if (!q) return;
+            // analyzeContent se encarga de todo el flujo (loading, llamada API, render, cerrar modal/habilitar botones)
+            analyzeContent(q, currentService);
+        });
+
+        // Enter dentro del modal
+        modalInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                const q = modalInput.value.trim();
+                if (!q) return;
+                modalAnalyzeBtn.click();
+            }
+        });
+
+        // Sección Protección Jugadores
+        if (gamerAnalyzeBtn && gamerInput) {
+            gamerAnalyzeBtn.addEventListener("click", () => {
+                const q = gamerInput.value.trim();
+                if (!q) return;
+                // Usa 'analyze-link' pero con el contexto 'gamer'
+                analyzeContent(q, "analyze-link", "gamer");
+            });
+
+            gamerInput.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") {
+                    const q = gamerInput.value.trim();
+                    if (!q) return;
+                    gamerAnalyzeBtn.click();
+                }
+            });
+        }
+
+
+        // =========================================================
+        // 3. LÓGICA DE UI Y RENDER (SIN CAMBIOS)
+        // =========================================================
+
+        
+        function openServiceModal(serviceKey) {
+            const cfg = serviceCopy[serviceKey] || serviceCopy['analyze-link'];
+            modalTitle.textContent = cfg.title;
+            modalDesc.textContent = cfg.desc;
+            modalInput.placeholder = cfg.placeholder;
+
+            // Smart prefill: only copy main/gamer input into modal if it matches the expected type
+            let prefill = "";
+            try {
+                const mainVal = (analysisInput && analysisInput.value) ? analysisInput.value.trim() : "";
+                const gamerVal = (gamerInput && gamerInput.value) ? gamerInput.value.trim() : "";
+                const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const phoneRx = /^\+?[\d\s\-]{7,25}$/;
+                const urlRx = /^(http|https):\/\/[^ "']+$/i;
+
+                if (serviceKey === 'analyze-link') {
+                    prefill = mainVal || gamerVal || '';
+                } else if (serviceKey === 'verify-email') {
+                    if (emailRx.test(mainVal)) prefill = mainVal;
+                    else if (emailRx.test(gamerVal)) prefill = gamerVal;
+                } else if (serviceKey === 'check-number') {
+                    const cleanMain = (mainVal || '').replace(/\s/g, '');
+                    const cleanGamer = (gamerVal || '').replace(/\s/g, '');
+                    if (phoneRx.test(cleanMain)) prefill = mainVal;
+                    else if (phoneRx.test(cleanGamer)) prefill = gamerVal;
+                } else {
+                    // For wallet, profile, QR and other specialized services, do not prefill
+                    prefill = '';
+                }
+            } catch (e) {
+                prefill = '';
+            }
+
+            modalInput.value = prefill;
+            serviceModal.classList.add("show");
+            modalInput.focus();
+        }
+
+        function closeServiceModal() {
+            // Clear modal input on close to avoid stale values
+            try { modalInput.value = ''; } catch(e){}
+            serviceModal.classList.remove("show");
+        }
+closeModalBtn.addEventListener("click", closeServiceModal);
+        serviceModal.addEventListener("click", (e) => {
+            if (e.target === serviceModal) closeServiceModal();
+        });
+
+
+        function getStatusColors(status) {
+            switch (status) {
+                case 'PELIGRO': return { icon: 'fa-skull', color: 'text-red-500', class: 'status-danger', action: '¡DETENTE y BLOQUEA!', label: 'PELIGRO (ALERTA ROJA)' };
+                case 'ADVERTENCIA': return { icon: 'fa-triangle-exclamation', color: 'text-yellow-500', class: 'status-warning', action: 'Procede con Cautela', label: 'ADVERTENCIA' };
+                case 'SEGURO': return { icon: 'fa-check-circle', color: 'text-green-500', class: 'status-safe', action: 'Continúa con Confianza', label: 'SEGURO' };
+                default: return { icon: 'fa-circle-question', color: 'text-gray-500', class: 'bg-gray-700', action: 'Análisis Inconcluso', label: 'INCONCLUSO' };
+            }
+        }
+        
+        
+        function renderGamerResults(title, resultText, sources, status, query) {
+            const { icon, color, class: statusClass, label } = getStatusColors(status);
+
+            // escape function (fallback)
+            const _escape = (window._AIESCUDO_utils && window._AIESCUDO_utils.escapeHTML) ? window._AIESCUDO_utils.escapeHTML : function(s){
+                return String(s===undefined||s===null?'':s)
+                  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                  .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+            };
+            const _sanitizeHref = (window._AIESCUDO_utils && window._AIESCUDO_utils.sanitizeHref) ? window._AIESCUDO_utils.sanitizeHref : function(h){
+                if(!h) return null;
+                try{ h = String(h).trim(); if(/^https?:\/\//i.test(h)) return h; if(/^\/\//.test(h)) return 'https:'+h; }catch(e){}
+                return null;
+            };
+
+            let sourcesHtml = '';
+            if (Array.isArray(sources) && sources.length > 0) {
+                sourcesHtml = `
+                    <div class="sources-list" style="border-top:0; padding-top:0;">
+                        <h4>Fuentes consultadas:</h4>
+                        <ul>
+                            ${sources.map(source => {
+                                const href = _sanitizeHref(source && source.uri ? source.uri : null);
+                                const name = _escape(source && source.name ? source.name : 'Fuente Desconocida');
+                                if(href){
+                                    return `<li><a href="${href}" target="_blank" rel="noopener noreferrer">${name}</a></li>`;
+                                } else {
+                                    return `<li>${name}</li>`;
+                                }
+                            }).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            // Safely escape result text and convert newlines to <br>
+            const safeResult = _escape(resultText).replace(/\r?\n/g, '<br>');
+            gamerResultsDisplay.innerHTML = `
+                <div class="results-container" id="report-to-download-gamer"> <div class="result-header">
+                        <div class="result-title">${_escape(title)}</div>
+                        <div class="result-header-right">
+                             <span class="status-badge ${statusClass}">${label}</span>
+                             <button onclick="downloadPDF('gamer')" class="pdf-download-btn" title="Descargar Informe en PDF">
+                                 <i class="fas fa-file-pdf"></i> PDF
+                             </button>
+                        </div>
+                    </div>
+                    <div class="result-text">${safeResult}</div>
+
+                    <div class="sources-list">
+                         <h4>Contenido analizado: <strong>${_escape(query)}</strong></h4>
+                         ${sourcesHtml}
+                    </div>
+                </div>
+            `;
+        }
+                function renderResults(title, resultText, sources, status, query, target) {
+            const { icon, color, class: statusClass, label } = getStatusColors(status);
+
+            let sourcesHtml = '';
+            if (Array.isArray(sources) && sources.length > 0) {
+                sourcesHtml = `
+                    <div class="sources-list" style="border-top:0; padding-top:0;">
+                        <h4>Fuentes consultadas:</h4>
+                        <ul>
+                            ${sources.map(source => 
+                                `<li><a href="${source.uri || '#'}" target="_blank" rel="noopener noreferrer">${source.name || 'Fuente Desconocida'}</a></li>`
+                            ).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            const targetDisplay = resultsDisplay;
+
+            targetDisplay.innerHTML = `
+                <div class="results-container" id="report-to-download-general"> <div class="result-header">
+                        <div class="result-title">${title}</div>
+                        <div class="result-header-right">
+                            <span class="status-badge ${statusClass}">${label}</span>
+                            <button onclick="downloadPDF('general')" class="pdf-download-btn" title="Descargar Informe en PDF">
+                                <i class="fas fa-file-pdf"></i> PDF
+                            </button>
+                        </div>
+                    </div>
+                    <div class="result-text">${resultText.replace(/\n/g, '<br>')}</div>
+                    
+                    <div class="sources-list">
+                        <h4>Contenido analizado: <strong>${query}</strong></h4>
+                        ${sourcesHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        function downloadPDF(context) {
+            const element = (context === 'gamer') 
+                ? document.getElementById('report-to-download-gamer') 
+                : document.getElementById('report-to-download-general');
+                
+            if (!element) { return; }
+            
+            const btn = element.querySelector('.pdf-download-btn');
+            if (btn) btn.style.display = 'none';
+
+            const opt = {
+              margin:       [0.5, 0.5, 0.5, 0.5], 
+              filename:     'Informe_AIESCUDO_' + context + '.pdf',
+              image:        { type: 'jpeg', quality: 0.98 },
+              html2canvas:  { scale: 2, useCORS: true },
+              jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            
+            html2pdf().from(element).set(opt).save().then(() => {
+                if (btn) btn.style.display = 'block';
+            });
+        }
+
+    </script>
+<!-- BEGIN: non-invasive security & UX patch v9.5 a -->
+<script>
+(function(){
+  // escape HTML to prevent XSS when inserting user/API text
+  function escapeHTML(str){
+    return String(str === undefined || str === null ? '' : str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // Safely set text content with newline -> <br> conversion WITHOUT using innerHTML on untrusted text.
+  function safeSetInnerHTML(container, text){
+    if(!container) return;
+    // Remove existing children
+    while (container.firstChild) container.removeChild(container.firstChild);
+    if(text === null || text === undefined) return;
+    var parts = String(text).split(/
+?
+/);
+    parts.forEach(function(p, idx){
+      container.appendChild(document.createTextNode(p));
+      if(idx !== parts.length - 1) container.appendChild(document.createElement('br'));
+    });
+  }
+
+  // Validate and secure external links; returns sanitized href or null
+  function sanitizeHref(href){
+    if(!href) return null;
+    try {
+      href = String(href).trim();
+      // Allow only http or https absolute links
+      if(/^https?:\/\//i.test(href)) return href;
+      // If starts with //, prepend https:
+      if(/^\/\//.test(href)) return 'https:' + href;
+      return null;
+    } catch(e){ return null; }
+  }
+
+  // Enhance existing links in the document to add rel & target if they are external
+  function hardenLinks(root){
+    root = root || document;
+    var anchors = root.querySelectorAll('a[href]');
+    anchors.forEach(function(a){
+      var safe = sanitizeHref(a.getAttribute('href'));
+      if(safe){
+        a.setAttribute('href', safe);
+        // Don't modify visible style; only add protective attributes
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener noreferrer nofollow');
+      }
+    });
+  }
+
+  // Provide a safe fetch wrapper with timeout using AbortController
+  function safeFetch(url, options, timeoutMs){
+    timeoutMs = typeof timeoutMs === 'number' ? timeoutMs : 12000; // default 12s
+    var controller = new AbortController();
+    var signal = controller.signal;
+    var opts = Object.assign({}, options || {}, { signal: signal });
+    var timer = setTimeout(function(){ controller.abort(); }, timeoutMs);
+    return fetch(url, opts)
+      .then(function(resp){
+        clearTimeout(timer);
+        return resp;
+      })
+      .catch(function(err){
+        clearTimeout(timer);
+        // Normalise AbortError
+        if(err && err.name === 'AbortError') throw new Error('timeout');
+        throw err;
+      });
+  }
+
+  // If there's an existing global connectToRealAPI, wrap it to use AbortController and clearer errors.
+  try {
+    if(window.connectToRealAPI && typeof window.connectToRealAPI === 'function'){
+      window._connectToRealAPI_original = window.connectToRealAPI;
+      window.connectToRealAPI = async function(query, service, context){
+        // Try to call original but with a timeout fallback using safeFetch if original uses fetch internally.
+        // We attempt to call original and if it returns a promise we race it against a timeout.
+        var TIMEOUT = 12000;
+        try {
+          var p = window._connectToRealAPI_original(query, service, context);
+          if(!(p && typeof p.then === 'function')){
+            // original returned synchronously (unexpected), wrap in Promise
+            return Promise.resolve(p);
+          }
+          // Race original promise against a timeout promise
+          var timeoutPromise = new Promise(function(_, reject){
+            setTimeout(function(){ reject(new Error('timeout')); }, TIMEOUT);
+          });
+          return await Promise.race([p, timeoutPromise]);
+        } catch(err){
+          // If original failed due to AbortError, convert to friendly message
+          if(err && err.message && err.message.toLowerCase().indexOf('abort') !== -1) {
+            throw new Error('La petición tardó demasiado (timeout).');
+          }
+          throw err;
+        }
+      };
+    } else {
+      // Provide a global fallback connectToRealAPI using POST /api/analyze if no original exists.
+      window.connectToRealAPI = async function(query, service, context){
+        var body = { query: query, service: service, context: context };
+        var res = await safeFetch('/api/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        }, 12000);
+        if(!res.ok){
+          var msg = 'Error ' + res.status;
+          try {
+            var j = await res.json();
+            msg = j && j.error ? (j.error) : msg;
+          } catch(e){}
+          throw new Error(msg);
+        }
+        return res.json();
+      };
+    }
+  } catch(e){
+    console.warn('connectToRealAPI wrapper failed', e);
+  }
+
+  // Generic modal accessibility and Esc-key handler (non-invasive)
+  (function(){
+    // Find elements that look like modals by data-modal attribute or class "modal"
+    var modals = document.querySelectorAll('[data-modal], .modal');
+    modals.forEach(function(modal){
+      // Add ARIA if missing
+      if(!modal.hasAttribute('role')) modal.setAttribute('role','dialog');
+      if(!modal.hasAttribute('aria-modal')) modal.setAttribute('aria-modal','true');
+      // If there's a title element inside, link it
+      var title = modal.querySelector('h2, h1, .modal-title, [data-modal-title]');
+      if(title && title.id){
+        modal.setAttribute('aria-labelledby', title.id);
+      } else if(title && !title.id){
+        title.id = 'modalTitle-' + Math.random().toString(36).slice(2,8);
+        modal.setAttribute('aria-labelledby', title.id);
+      }
+    });
+
+    // Esc handler to close modals that have class "open" or attribute aria-hidden="false"
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' || e.key === 'Esc'){
+        var open = document.querySelector('.modal.open, [data-modal].open, [data-modal][aria-hidden="false"]');
+        if(open){
+          // try to find a close button inside
+          var closeBtn = open.querySelector('[data-modal-close], .modal-close, .close');
+          if(closeBtn && typeof closeBtn.click === 'function'){
+            closeBtn.click();
+          } else {
+            // fallback: remove "open" class and set aria-hidden
+            open.classList.remove('open');
+            open.setAttribute('aria-hidden','true');
+          }
+          // return focus to trigger if known
+          var trigger = document.querySelector('[data-modal-trigger][data-modal-target="#' + open.id + '"]');
+          if(trigger) trigger.focus();
+        }
+      }
+    }, false);
+  })();
+
+  // Enhance links on DOMContentLoaded and also expose a function for dynamic content
+  function enhanceDocument(){
+    hardenLinks(document);
+    // Replace any risky innerHTML usages in common result containers by copying textContent -> preserving styling.
+    // We try to find common IDs/classes used by the app (defensive list)
+    var possibleTextContainers = [
+      '#resultText', '.result-text', '.analysis-result', '#analysisResult', '.output'
+    ];
+    possibleTextContainers.forEach(function(sel){
+      var el = document.querySelector(sel);
+      if(el && el.dataset && el.dataset._safeProcessed) return;
+      if(el){
+        // mark processed to avoid repeated work
+        el.dataset._safeProcessed = '1';
+        // read current HTML, set safe text preserving <br>
+        var raw = el.innerText || el.textContent || '';
+        // replace content safely
+        safeSetInnerHTML(el, raw);
+      }
+    });
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', enhanceDocument);
+  } else {
+    enhanceDocument();
+  }
+
+  // Expose helpers for manual use
+  window._AIESCUDO_utils = {
+    escapeHTML: escapeHTML,
+    safeSetInnerHTML: safeSetInnerHTML,
+    sanitizeHref: sanitizeHref,
+    safeFetch: safeFetch,
+    hardenLinks: hardenLinks
+  };
+
+  // Immediately harden existing links once script runs
+  try { hardenLinks(document); } catch(e){}
+
+})();
+</script>
+<!-- END: non-invasive security & UX patch v9.5 a -->
+<!-- ADDED: Stable auto-clear script for "analizar" buttons (non-invasive) -->
+<script id="aiescudo-autoclear">
+document.addEventListener('DOMContentLoaded', () => {
+  // Encuentra botones cuyo texto contenga "analizar" (case-insensitive)
+  const analyzeButtons = Array.from(document.querySelectorAll('button, a'))
+    .filter(el => {
+      const t = (el.textContent || '').trim().toLowerCase();
+      return t.includes('analizar') || t.includes('analyses') || t.includes('analyze');
+    });
+
+  // función segura para limpiar solo campos relevantes
+  function clearRelevantFields(triggerEl) {
+    // Delay para permitir envío de datos (si la acción hace fetch)
+    setTimeout(() => {
+      const textFields = Array.from(document.querySelectorAll('input[type="text"], input[type="url"], input[type="search"], input[type="tel"], input[type="email"], textarea'));
+      textFields.forEach(field => {
+        try {
+          // No borrar campos marcados como opt-out
+          if (field.classList.contains('no-autoclear') || field.hasAttribute('data-no-autoclear')) return;
+
+          // 1) Si el campo tiene la clase explícita para limpiar, limpiarlo
+          if (field.classList.contains('clear-after-analyze') || field.dataset.clearAfterAnalyze === 'true') {
+            field.value = '';
+            return;
+          }
+
+          // 2) Si el botón pulsado es de modo GAMER (texto contiene 'gamer'), borrar campos dentro
+          //    de un contenedor cercano con clase 'gamer' o 'gamer-container'
+          const btnText = (triggerEl.textContent || '').toLowerCase();
+          if (btnText.includes('gamer')) {
+            // si el campo está dentro de un contenedor gamer, lo limpiamos
+            const gamerAncestor = field.closest('[class*="gamer"], .gamer-container, [id*="gamer"]');
+            if (gamerAncestor) {
+              field.value = '';
+              return;
+            }
+          }
+
+          // 3) Si el placeholder del campo contiene la palabra 'pega' (es el input principal en tu UI), limpiarlo
+          const ph = (field.placeholder || '').toLowerCase();
+          if (ph.includes('pega') || ph.includes('pegar') || ph.includes('paste')) {
+            field.value = '';
+            return;
+          }
+
+          // 4) Como fallback conservador: si el campo está dentro del mismo formulario o sección que el botón, limpiarlo
+          const formAncestor = field.closest('form');
+          const btnFormAncestor = triggerEl.closest('form');
+          if (formAncestor && btnFormAncestor && formAncestor === btnFormAncestor) {
+            field.value = '';
+            return;
+          }
+
+        } catch (e) {
+          // Silenciar errores de lectura/escritura por seguridad
+          console.warn('AutoClear: skip field', e);
+        }
+      });
+    }, 300); // 300ms para dar tiempo a envíos asíncronos
+  }
+
+  analyzeButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      // Ejecutar limpieza de forma segura sin interferir con el comportamiento por defecto
+      // Si el botón está dentro de un form que hace submit tradicional, dejar que el submit continúe.
+      try {
+        clearRelevantFields(btn);
+      } catch (err) {
+        console.error('AutoClear error', err);
+      }
+    }, { passive: true });
+  });
+
+  // Modo extra: permitir limpiar todo si se pulsa Shift+Click (útil para testing)
+  analyzeButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      if (e.shiftKey) {
+        // limpia TODOS los campos (excepto los marcados no-autoclear)
+        setTimeout(() => {
+          document.querySelectorAll('input[type="text"], input[type="url"], input[type="search"], input[type="tel"], input[type="email"], textarea')
+            .forEach(f => { if (!f.classList.contains('no-autoclear') && !f.hasAttribute('data-no-autoclear')) f.value = ''; });
+        }, 200);
+      }
+    });
+  });
+
+});
+</script>
+<script id="aiescudo-logo-link">
+document.addEventListener('DOMContentLoaded', function(){
+  try {
+    const targetUrl = 'https://aiescudo-web.vercel.app/';
+    // search for elements that look like a logo: img alt contains 'logo', or elements with id/class containing 'logo' or an <a> wrapping an img with logo alt
+    const candidates = [];
+    document.querySelectorAll('img').forEach(img=>{
+      const alt = (img.getAttribute('alt')||'').toLowerCase();
+      if (alt.includes('logo')) candidates.push(img);
+    });
+    // also look for elements with id/class containing logo
+    document.querySelectorAll('[id],[class]').forEach(el=>{
+      const id = (el.id||'').toLowerCase();
+      const cls = (el.className||'').toLowerCase();
+      if (id.includes('logo') || cls.includes('logo')) candidates.push(el);
+    });
+    // if none found, try first image near the header text
+    if (candidates.length === 0) {
+      const headerImg = document.querySelector('header img, .header img, .logo img, img');
+      if (headerImg) candidates.push(headerImg);
+    }
+    // attach click handler to unique candidates
+    const seen = new Set();
+    candidates.forEach(el=>{
+      if (!el) return;
+      if (seen.has(el)) return;
+      seen.add(el);
+      // make clickable
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', function(e){
+        // navigate to the provided URL
+        window.location.href = targetUrl;
+      }, {passive: true});
+    });
+  } catch (err) {
+    console.warn('Logo link script error', err);
+  }
+});
+</script>
+</body>
+</html>

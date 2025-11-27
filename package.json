@@ -1,0 +1,23 @@
+{
+  "name": "aiescudo-backend",
+  "version": "1.0.0",
+  "description": "Backend Serverless package.",
+  "main": "index.js",
+  "scripts": {
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "@google/generative-ai": "latest"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "keywords": [
+    "vercel",
+    "serverless",
+    "gemini",
+    "google-ai"
+  ],
+  "author": "ISC",
+  "license": "ISC"
+}
