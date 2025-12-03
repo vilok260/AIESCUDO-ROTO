@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
 <meta charset="utf-8"/>
@@ -35,7 +34,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
+            min-height: 10vh;
         }
 
         .container {
@@ -790,7 +789,6 @@
             }
         }
     </style>
-<!-- ADDED: Gamer button violet styles -->
 <style id="aiescudo-gamer-style">
 /* === Estilos para modo GAMER: violeta / morado === */
 .gamer-container {
@@ -863,7 +861,9 @@
 /* make sure any icon inside gamer button is white for contrast */
 .gamer-analyze-btn .fas, .gamer-analyze-btn .far, .gamer-analyze-btn svg { color: #ffffff; }
 </style>
-</head>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+<script defer src="assets/config.js"></script>
+<script defer src="assets/app-auth.js"></script> </head>
 <body>
 <header class="header">
 <div class="logo">
@@ -873,6 +873,10 @@
 </div>
 <h1>Tu <span class="accent">Escudo Anti-Fraude</span> para Familia.</h1>
 <h2>Comprobación sencilla, pensada para personas inexpertas.</h2>
+<div style="position:absolute; top:18px; right:18px; display:flex; gap:8px;">
+    <button class="modal-primary-btn" id="btnLogin" style="padding:10px 14px; font-weight:700; background:linear-gradient(90deg,#444 0%,#666 100%);" type="button">Entrar</button>
+    <button class="modal-primary-btn" id="btnRegister" style="padding:10px 14px; font-weight:700; background:linear-gradient(90deg,#007bff 0%,#00c0ff 100%);" type="button">Crear usuario</button>
+</div>
 </header>
 <main class="container">
 <section class="analysis-section">
@@ -918,7 +922,7 @@
                     🎮 PROTECCION PARA JUGADORES
                 </h2>
 <p style="color: var(--color-text-secondary); font-size: 15px; margin-bottom: 20px;">
-                    Protege tus cuentas Roblox, Epic/Fornite, Nintendo, Minecraft,Pokemon GO, Steam Activision,  PlayStation/Sony, Xbox, EA-Sports, Valorant.¡Manténlas seguras! .
+                    Protege tus cuentas Roblox, Epic/Fornite, Nintendo, Minecraft,Pokemon GO, Steam Activision, PlayStation/Sony, Xbox, EA-Sports, Valorant.¡Manténlas seguras! .
                 </p>
 <div class="analysis-section" style="margin-bottom: 15px;">
 <div class="gamer-search-bar">
@@ -984,7 +988,6 @@
 <div class="tag" style="background-color: #ff5722;">PACK FAMILIAR</div>
 <h3>Plan Ilimitado (5 Usuarios)</h3>
 <div class="price">4,99€ <span>/ mes</span></div>
-
 <ul><li>Protección para toda la unidad familiar en un solo plan.</li><li>2 Dispositivos</li><li>2,99€ / mes</li><li>3 Dispositivos</li><li>4,99€ / mes</li><li>✔ Todas las funciones del Plan Premium.</li></ul>
 <button class="modal-primary-btn" style="background-color: #ff5522;">Contratar Plan</button>
 </div>
@@ -999,6 +1002,48 @@
 <button class="modal-primary-btn" id="modalAnalyzeBtn">Analizar</button>
 </div>
 </div>
+
+<div aria-hidden="true" class="modal-overlay" id="authModal" style="display:none;">
+    <div aria-labelledby="authModalTitle" aria-modal="true" class="modal-box" role="dialog" style="max-width:520px;">
+        <button class="modal-close" id="authCloseBtn" type="button">×</button>
+        <h3 class="modal-title" id="authModalTitle">Acceso / Registro</h3>
+        <p class="modal-desc" id="authModalDesc">Entra con tu cuenta o crea un usuario nuevo. Al registrarte podrás elegir un plan.</p>
+        <div style="display:flex; gap:12px; margin-bottom:12px;">
+            <button class="modal-primary-btn" id="tabLogin" style="flex:1; background:#555;" type="button">Entrar</button>
+            <button class="modal-primary-btn" id="tabSignup" style="flex:1; background:linear-gradient(90deg,#007bff 0%,#00c0ff 100%);" type="button">Crear usuario</button>
+        </div>
+        <form id="authForm" style="display:block;">
+            <label style="display:block; text-align:left; font-weight:600; margin-bottom:6px;">Email</label>
+            <input class="modal-input" id="authEmail" placeholder="tu@ejemplo.com" required="" type="email"/>
+            <label style="display:block; text-align:left; font-weight:600; margin:10px 0 6px;">Contraseña</label>
+            <input class="modal-input" id="authPassword" placeholder="Contraseña" required="" type="password"/>
+            
+            <div id="planSelector" style="margin-top:12px; text-align:left; display:none;">
+                <label style="font-weight:700; display:block; margin-bottom:6px;">Selecciona un plan</label>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <label style="display:flex; gap:6px; align-items:center;"><input name="plan" type="radio" value="free"/> Free (con registro)</label>
+                    <label style="display:flex; gap:6px; align-items:center;"><input name="plan" type="radio" value="premium"/> Premium</label>
+                    <label style="display:flex; gap:6px; align-items:center;"><input name="plan" type="radio" value="familiar2"/> Familiar (2 dispositivos)</label>
+                    <label style="display:flex; gap:6px; align-items:center;"><input name="plan" type="radio" value="familiar3"/> Familiar (3 dispositivos)</label>
+                </div>
+            </div>
+            
+            <div style="text-align:center; margin: 20px 0 10px; color: var(--color-text-secondary); font-size:14px;">
+                O accede con un proveedor social
+            </div>
+            <button class="modal-primary-btn" id="signInWithGitHubBtn" type="button" 
+                    style="background-color: #333; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <i class="fab fa-github" style="font-size: 18px;"></i>
+                Continuar con GitHub
+            </button>
+            <div id="authMsg" style="margin-top:10px; color:var(--color-text-secondary); font-size:14px;"></div>
+            <div style="display:flex; gap:8px; margin-top:14px;">
+                <button class="modal-primary-btn" id="submitAuth" type="button">Enviar</button>
+                <button class="modal-primary-btn" id="cancelAuth" style="background:#777;" type="button">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
 <script>
         const analysisInput = document.getElementById('analysisInput');
         const analyzeBtn = document.getElementById('analyzeBtn');
@@ -1009,7 +1054,7 @@
 
         let currentService = "analyze-link"; // Servicio por defecto al iniciar
 
-        // Modal
+        // Modal de análisis (NO de Auth)
         const serviceModal = document.getElementById("serviceModal");
         const modalTitle = document.getElementById("modalTitle");
         const modalDesc = document.getElementById("modalDesc");
@@ -1056,14 +1101,28 @@
         
         async function connectToRealAPI(query, service, context = 'general') {
             const endpoint = `/api/${service}`;
+            
+            // --- Autenticación si es necesario ---
+            const headers = { 'Content-Type': 'application/json' };
+            // Aseguramos que supabaseClient exista (se cargará por config.js y app-auth.js)
+            if (window.supabaseClient) { 
+                try {
+                    const { data } = await window.supabaseClient.auth.getSession();
+                    const token = data?.session?.access_token;
+                    if (token) headers['Authorization'] = 'Bearer ' + token;
+                } catch(e){
+                    console.warn('No se pudo obtener el token de sesión:', e);
+                }
+            }
+            // ------------------------------------
+
             const response = await fetch(endpoint, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: headers, // Usar los headers con/sin token
                 body: JSON.stringify({ query, service, context }),
             });
 
             if (!response.ok) {
-                // Mejor manejo de errores: garantiza que el mensaje de error sea legible
                 const errorData = await response.json().catch(() => ({ error: 'Respuesta no JSON del servidor' }));
                 const errorMessage = errorData.error || response.statusText;
                 throw new Error(`Error ${response.status}: ${errorMessage}`);
@@ -1232,8 +1291,6 @@ async function analyzeContent(query, service, context = 'general') {
         document.querySelectorAll(".service-card").forEach(card => {
             const svc = card.dataset.service;
             card.addEventListener("click", () => {
-                // NOTA: Eliminamos la comprobación `if (card.classList.contains('opacity-50')) return;`
-                // porque las clases de opacidad ya fueron eliminadas del HTML.
                 
                 // Lógica visual extraída
                 updateActiveCard(svc);
@@ -1461,7 +1518,6 @@ closeModalBtn.addEventListener("click", closeServiceModal);
         }
 
     </script>
-<!-- BEGIN: non-invasive security & UX patch v9.5 a -->
 <script>
 (function(){
   // escape HTML to prevent XSS when inserting user/API text
@@ -1609,16 +1665,18 @@ closeModalBtn.addEventListener("click", closeServiceModal);
     // Esc handler to close modals that have class "open" or attribute aria-hidden="false"
     document.addEventListener('keydown', function(e){
       if(e.key === 'Escape' || e.key === 'Esc'){
-        var open = document.querySelector('.modal.open, [data-modal].open, [data-modal][aria-hidden="false"]');
+        // Incluye el modal de Auth en la búsqueda
+        var open = document.querySelector('.modal.open, [data-modal].open, [data-modal][aria-hidden="false"], #authModal[aria-hidden="false"]');
         if(open){
           // try to find a close button inside
-          var closeBtn = open.querySelector('[data-modal-close], .modal-close, .close');
+          var closeBtn = open.querySelector('[data-modal-close], .modal-close, .close, #authCloseBtn');
           if(closeBtn && typeof closeBtn.click === 'function'){
             closeBtn.click();
           } else {
             // fallback: remove "open" class and set aria-hidden
             open.classList.remove('open');
             open.setAttribute('aria-hidden','true');
+            if(open.id === 'authModal') open.style.display = 'none';
           }
           // return focus to trigger if known
           var trigger = document.querySelector('[data-modal-trigger][data-modal-target="#' + open.id + '"]');
@@ -1670,8 +1728,6 @@ closeModalBtn.addEventListener("click", closeServiceModal);
 
 })();
 </script>
-<!-- END: non-invasive security & UX patch v9.5 a -->
-<!-- ADDED: Stable auto-clear script for "analizar" buttons (non-invasive) -->
 <script id="aiescudo-autoclear">
 document.addEventListener('DOMContentLoaded', () => {
   // Encuentra botones cuyo texto contenga "analizar" (case-insensitive)
@@ -1796,6 +1852,164 @@ document.addEventListener('DOMContentLoaded', function(){
   } catch (err) {
     console.warn('Logo link script error', err);
   }
+});
+</script>
+<script>
+// AUTH / SUPABASE INTEGRATION LOGIC (Merge of index.html and app-auth.js logic)
+document.addEventListener('DOMContentLoaded', function(){
+  // El cliente Supabase debería ser global después de cargar config.js y app-auth.js
+  let supabaseClient = window.supabase;
+  if (!supabaseClient) {
+      console.warn('Supabase Client no está disponible en la ventana. Verifique config.js y app-auth.js');
+  } else {
+      console.log('Supabase Client detectado y listo para autenticación.');
+      // Hazlo global para el modal, aunque idealmente ya es global desde app-auth.js
+      window.supabaseClient = supabaseClient; 
+  }
+
+  // Elementos del Modal de Autenticación
+  const authModal = document.getElementById('authModal');
+  const btnLogin = document.getElementById('btnLogin');
+  const btnRegister = document.getElementById('btnRegister');
+  const tabLogin = document.getElementById('tabLogin');
+  const tabSignup = document.getElementById('tabSignup');
+  const authCloseBtn = document.getElementById('authCloseBtn');
+  const cancelAuth = document.getElementById('cancelAuth');
+  const submitAuth = document.getElementById('submitAuth');
+  const authEmail = document.getElementById('authEmail');
+  const authPassword = document.getElementById('authPassword');
+  const planSelector = document.getElementById('planSelector');
+  const authMsg = document.getElementById('authMsg');
+  const signInWithGitHubBtn = document.getElementById('signInWithGitHubBtn');
+
+  let mode = 'login'; // 'login' or 'signup'
+  
+  // --- Funciones de UI del Modal ---
+  function openModal(m) {
+    mode = m || 'login';
+    authModal.style.display = 'flex';
+    authModal.setAttribute('aria-hidden','false');
+    authMsg.textContent = '';
+    
+    if(mode === 'signup') {
+      planSelector.style.display = 'block';
+      tabSignup.style.opacity = '1';
+      tabLogin.style.opacity = '0.7';
+      submitAuth.textContent = 'Crear cuenta';
+    } else {
+      planSelector.style.display = 'none';
+      tabLogin.style.opacity = '1';
+      tabSignup.style.opacity = '0.7';
+      submitAuth.textContent = 'Entrar';
+    }
+    authEmail.focus();
+  }
+  
+  function closeModal(){
+    authModal.style.display = 'none';
+    authModal.setAttribute('aria-hidden','true');
+    authMsg.textContent = '';
+    authEmail.value = '';
+    authPassword.value = '';
+    const radios = document.querySelectorAll('#planSelector input[type=radio]');
+    radios.forEach(r=>r.checked=false);
+  }
+
+  // --- Manejadores de Eventos del Modal UI ---
+  btnLogin && btnLogin.addEventListener('click', function(){ openModal('login'); });
+  btnRegister && btnRegister.addEventListener('click', function(){ openModal('signup'); });
+  tabLogin && tabLogin.addEventListener('click', function(){ openModal('login'); });
+  tabSignup && tabSignup.addEventListener('click', function(){ openModal('signup'); });
+  authCloseBtn && authCloseBtn.addEventListener('click', closeModal);
+  cancelAuth && cancelAuth.addEventListener('click', closeModal);
+  authModal && authModal.addEventListener('click', function(e){ if(e.target === authModal) closeModal(); });
+
+
+  // --- Lógica Principal Email/Password ---
+  submitAuth && submitAuth.addEventListener('click', async function(){
+    const email = authEmail.value && authEmail.value.trim();
+    const password = authPassword.value && authPassword.value.trim();
+    
+    if(!email || !password){
+      authMsg.style.color='var(--color-warning)';
+      authMsg.textContent = 'Introduce email y contraseña.';
+      return;
+    }
+    
+    if(!window.AIESCUDO_AUTH){
+        authMsg.style.color='var(--color-warning)';
+        authMsg.textContent = 'Error: No se ha cargado la lógica de autenticación (app-auth.js).';
+        return;
+    }
+
+    authMsg.textContent = 'Procesando...';
+
+    if(mode === 'login'){
+      const result = await window.AIESCUDO_AUTH.loginUser(email, password);
+      if(result.success){
+        authMsg.style.color='var(--color-safe)';
+        authMsg.textContent = 'Sesión iniciada correctamente.';
+        setTimeout(closeModal, 1000);
+      } else {
+        authMsg.style.color='var(--color-danger)';
+        authMsg.textContent = 'Error: ' + result.message;
+      }
+      
+    } else { // Signup
+      const sel = document.querySelector('#planSelector input[type=radio]:checked');
+      const plan = sel ? sel.value : 'free';
+      
+      const result = await window.AIESCUDO_AUTH.registerUser(email, password, plan);
+      if(result.success){
+        authMsg.style.color='var(--color-safe)';
+        authMsg.textContent = result.message;
+        setTimeout(closeModal, 1200);
+      } else {
+        authMsg.style.color='var(--color-danger)';
+        authMsg.textContent = 'Error: ' + result.message;
+      }
+    }
+  });
+
+
+  // ===================================
+  // MANEJADOR DE AUTENTICACIÓN SOCIAL (GITHUB)
+  // ===================================
+  async function handleSignInWithProvider(provider) {
+      if(!window.supabaseClient){
+          authMsg.style.color='var(--color-warning)';
+          authMsg.textContent = 'Servicio de autenticación no disponible.';
+          return;
+      }
+      
+      authMsg.style.color='var(--color-text-secondary)';
+      authMsg.textContent = `Redirigiendo a ${provider}...`;
+      
+      try {
+          // Llama a la función de Supabase para iniciar el flujo OAuth
+          const { error } = await window.supabaseClient.auth.signInWithOAuth({
+              provider: provider,
+              options: {
+                  // URL de redirección. Debe estar registrada en Supabase.
+                  redirectTo: 'https://aiescudo-web.vercel.app/' 
+              }
+          });
+
+          if (error) throw error;
+          // Si es exitoso, el navegador se redirige, por lo que este código no se ejecuta.
+
+      } catch (err) {
+          authMsg.style.color='var(--color-danger)';
+          authMsg.textContent = 'Error en redirección: ' + (err.message || 'Error desconocido');
+      }
+  }
+
+  // Asignar el evento click al botón de GitHub
+  signInWithGitHubBtn && signInWithGitHubBtn.addEventListener('click', function(){
+      // Inicia la autenticación OAuth de GitHub
+      handleSignInWithProvider('github'); 
+  });
+  
 });
 </script>
 </body>
